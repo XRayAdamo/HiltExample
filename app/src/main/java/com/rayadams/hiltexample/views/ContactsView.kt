@@ -11,17 +11,23 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.rayadams.hiltexample.R
@@ -30,6 +36,9 @@ import com.rayadams.hiltexample.views.view_models.ContactsViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactsView(viewModel: ContactsViewModel = hiltViewModel()) {
+
+    val (askDelete, setAskDelete) = remember { mutableStateOf(false) }
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(title = { Text(stringResource(R.string.txt_contacts)) },
             actions = {
@@ -56,7 +65,8 @@ fun ContactsView(viewModel: ContactsViewModel = hiltViewModel()) {
                     }) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(5.dp)) {
+                        modifier = Modifier.padding(5.dp)
+                    ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text("${contact.firstName} ${contact.lastName}")
                             Text(contact.phoneNumber)
@@ -65,6 +75,9 @@ fun ContactsView(viewModel: ContactsViewModel = hiltViewModel()) {
                             onClick = { viewModel.deleteContact(contact) }) {
                             Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.txt_delete))
                         }
+                    }
+                    if (askDelete) {
+
                     }
                 }
             }

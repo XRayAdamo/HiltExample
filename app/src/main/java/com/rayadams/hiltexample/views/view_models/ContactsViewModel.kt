@@ -45,4 +45,5 @@ class ContactsViewModel @Inject constructor(
     fun deleteContact(contact: ContactModel) {
 
     }
+
 }
