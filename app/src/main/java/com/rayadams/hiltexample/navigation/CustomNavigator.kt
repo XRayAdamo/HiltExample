@@ -50,6 +50,7 @@ data class NavigationAction(
     val navOptions: NavOptions = NavOptions.Builder().build()            // No NavOptions as default
 )
 
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 @Singleton
 class CustomNavigator @Inject constructor() {
     private val _navActions =
