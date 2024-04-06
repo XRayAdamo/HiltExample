@@ -20,10 +20,7 @@ interface ContactsRepository {
 @Singleton
 class ContactsRepositoryImpl: ContactsRepository {
 
-    private val _contacts = mutableListOf<ContactModel>(
-        ContactModel(firstName = "John", lastName = "Doe", phoneNumber = "123123123"),
-        ContactModel(firstName = "Jane", lastName = "Doe", phoneNumber = "998585")
-    )
+    private val _contacts = mutableListOf<ContactModel>()
     override val contacts: List<ContactModel> = _contacts
 
     /**

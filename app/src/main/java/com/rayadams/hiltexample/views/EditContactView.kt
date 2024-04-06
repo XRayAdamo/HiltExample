@@ -15,7 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -26,6 +31,11 @@ import com.rayadams.hiltexample.views.view_models.EditContactViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditContactView(viewModel: EditContactViewModel= hiltViewModel()) {
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(title = { Text(stringResource(R.string.txt_edit_contact)) },
@@ -53,6 +63,8 @@ fun EditContactView(viewModel: EditContactViewModel= hiltViewModel()) {
         ) {
             TextField(value = viewModel.firstName,
                 modifier = Modifier
+                    .focusTarget()
+                    .focusRequester(focusRequester)
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
                 label = { Text(stringResource(R.string.first_name)) },

@@ -10,7 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.rayadams.hiltexample.R
 
 @Composable
-fun AskDeleteDialog(onConfirm: () -> Unit, onCancel: () -> Unit) {
+fun AskDeleteDialog(onCancel: () -> Unit, onConfirm: () -> Unit) {
     AlertDialog(onDismissRequest = { onCancel() },
         title = { Text(stringResource(R.string.txt_delete_rec)) },
         text = { Text(stringResource(R.string.txt_confirm_delete_rec)) },

@@ -7,6 +7,8 @@ import com.rayadams.hiltexample.model.ContactModel
 import com.rayadams.hiltexample.navigation.CustomNavigator
 import com.rayadams.hiltexample.navigation.NavigationPath
 import com.rayadams.hiltexample.repositories.ContactsRepository
+import com.rayadams.hiltexample.use_cases.DeleteContactUseCase
+import com.rayadams.hiltexample.use_cases.GetAllContactsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,6 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactsViewModel @Inject constructor(
     private val customNavigator: CustomNavigator,
+    private val deleteContactUseCase: DeleteContactUseCase,
+    private val getAllContactsUseCase: GetAllContactsUseCase,
     private val contactsRepository: ContactsRepository
 ) : ViewModel() {
 
@@ -31,7 +35,7 @@ class ContactsViewModel @Inject constructor(
 
     private fun loadData() {
         data.clear()
-        data.addAll(contactsRepository.contacts)
+        data.addAll(getAllContactsUseCase())
     }
 
     fun editContact(contact: ContactModel) {
@@ -43,7 +47,7 @@ class ContactsViewModel @Inject constructor(
     }
 
     fun deleteContact(contact: ContactModel) {
-
+        deleteContactUseCase(contact)
     }
 
 }
