@@ -8,11 +8,23 @@ import kotlinx.coroutines.flow.SharedFlow
 import java.util.UUID
 import javax.inject.Singleton
 
-@Singleton
-class ContactsRepository {
+interface ContactsRepository {
+    val contacts: List<ContactModel>
+    val onDataChanged: SharedFlow<Unit>
 
-    private val _contacts = mutableListOf<ContactModel>()
-    val contacts: List<ContactModel> = _contacts
+    fun addContact(contactModel: ContactModel)
+    fun getContactByID(id: UUID): ContactModel?
+    fun deleteContact(contactModel: ContactModel)
+    fun updateContact(id: UUID, firstName: String, lastName: String, phoneNumber: String)
+}
+@Singleton
+class ContactsRepositoryImpl: ContactsRepository {
+
+    private val _contacts = mutableListOf<ContactModel>(
+        ContactModel(firstName = "John", lastName = "Doe", phoneNumber = "123123123"),
+        ContactModel(firstName = "Jane", lastName = "Doe", phoneNumber = "998585")
+    )
+    override val contacts: List<ContactModel> = _contacts
 
     /**
      * This flow event keeps subscribers informed whenever the data changes,
@@ -21,21 +33,21 @@ class ContactsRepository {
      */
     private val _onDataChanged =
         MutableSharedFlow<Unit>(replay = 1, onBufferOverflow = BufferOverflow.DROP_LATEST)
-    val onDataChanged: SharedFlow<Unit> = _onDataChanged
+    override val onDataChanged: SharedFlow<Unit> = _onDataChanged
 
-    fun addContact(contactModel: ContactModel) {
+    override fun addContact(contactModel: ContactModel) {
         _contacts.add(contactModel)
         notifySubscribers()
     }
 
-    fun getContactByID(id: UUID): ContactModel? = _contacts.firstOrNull { it.id == id }
+    override fun getContactByID(id: UUID): ContactModel? = _contacts.firstOrNull { it.id == id }
 
-    fun deleteContact(contactModel: ContactModel) {
+    override fun deleteContact(contactModel: ContactModel) {
         _contacts.remove(contactModel)
         notifySubscribers()
     }
 
-    fun updateContact(id: UUID, firstName: String, lastName: String, phoneNumber: String) {
+    override fun updateContact(id: UUID, firstName: String, lastName: String, phoneNumber: String) {
         val index = _contacts.indexOfFirst { it.id == id }
         if (index != -1) {
             _contacts[index] = _contacts[index].copy(
