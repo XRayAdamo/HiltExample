@@ -6,7 +6,6 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import java.util.UUID
-import javax.inject.Singleton
 
 interface ContactsRepository {
     val contacts: List<ContactModel>
@@ -17,8 +16,8 @@ interface ContactsRepository {
     fun deleteContact(contactModel: ContactModel)
     fun updateContact(id: UUID, firstName: String, lastName: String, phoneNumber: String)
 }
-@Singleton
-class ContactsRepositoryImpl: ContactsRepository {
+
+class ContactsRepositoryImpl : ContactsRepository {
 
     private val _contacts = mutableListOf<ContactModel>()
     override val contacts: List<ContactModel> = _contacts
@@ -60,7 +59,7 @@ class ContactsRepositoryImpl: ContactsRepository {
      * Alert subscribers to data updates and clear the notification replay cache to ensure new subscribers only receive current notifications.
      */
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun notifySubscribers(){
+    private fun notifySubscribers() {
         _onDataChanged.tryEmit(Unit)
         _onDataChanged.resetReplayCache()
     }

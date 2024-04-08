@@ -7,5 +7,4 @@ import javax.inject.Inject
 
 class GetContactByIdUseCase @Inject constructor(private val contactsRepository: ContactsRepository) {
     operator fun invoke(id: UUID): ContactModel? = contactsRepository.getContactByID(id)
-
 }
